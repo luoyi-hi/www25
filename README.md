@@ -91,15 +91,16 @@ SynRTP is implemented in PyTorch and trained on a Tesla V100 (16 GB) GPU. After 
 
 ### 2.2 Dataset Description
 
-We evaluate our approach using two large-scale real-world last-mile delivery datasets from LaDe[^1], collected by Cainiao Network, one of China's largest logistics platforms. The datasets comprise delivery records from ***Shanghai*** and ***Chongqing***, representing diverse urban environments. The summarizes key statistics. Each dataset spans six months and covers approximately 400 km<sup>2</sup>, with couriers serving as workers and delivery tasks as nodes in our formulation.
+We evaluate our approach using five large-scale real-world datasets to ensure robust generalization. Beyond the original logistics datasets from Shanghai and Chongqing (collected by Cainiao Network)LaDe[^1], we incorporate two additional logistics datasets from Hangzhou and Yantai, as well as a cross-domain food delivery dataset from Dalian (collected by Ele.me[^2]). Collectively, these datasets span diverse urban environments (from mountainous terrains to coastal cities) and distinct operational modes (standard logistics vs. on-demand food delivery), providing a comprehensive benchmark for performance evaluation.
 
 [^1]: https://huggingface.co/datasets/Cainiao-AI/LaDe
 
+[^2]: https://tianchi.aliyun.com/competition/entrance/231777/information
 
 
 
 
-The original datasets can be downloaded from the following link: https://huggingface.co/datasets/Cainiao-AI/LaDe. 
+The original datasets can be downloaded from the following link: https://huggingface.co/datasets/Cainiao-AI/LaDe. and https://tianchi.aliyun.com/competition/entrance/231777/information.
 
 Install environment dependencies using the following command:
 
@@ -140,9 +141,7 @@ python run.py
 
 **Table 4** presents the comprehensive performance comparison of SynRTP against state-of-the-art baselines across all five datasets. Our model consistently achieves superior performance in both route prediction (KRC, LSD, HR@3) and time prediction (MAE, RMSE) tasks, demonstrating its robustness across diverse platforms and geographic environments.
 
-To address concerns regarding model stability and experimental variance, we conducted three independent runs for SynRTP to report the mean and standard deviation ($\text{mean} \pm \text{std}$). Due to the limited time window during the rebuttal phase, we were unable to re-train all baselines three times. However, to ensure a rigorous comparison, we prioritized conducting this statistical analysis for the strongest baseline (DRL4Route).
-
-As shown in **Table 5**, SynRTP exhibits low variance and consistently outperforms the strongest baseline across all metrics. We are fully committed to extending this multi-run statistical analysis to all remaining baselines in the final camera-ready version to further ensure the reproducibility of our results.
+To address concerns regarding model stability and experimental variance, we conducted three independent runs for SynRTP to report the mean and standard deviation ($\text{mean} \pm \text{std}$). Due to the limited time window during the rebuttal phase, we were unable to re-train all baselines three times. However, as shown in **Table 5**, SynRTP exhibits low variance across independent runs, demonstrating the inherent stability of our proposed framework. We are fully committed to extending this multi-run statistical analysis to all remaining baselines in the final camera-ready version to further ensure the reproducibility and rigorous comparison of our results.
 
 
 <p align="center"> <b>Table 4</b> Performance comparison on route and time prediction across five datasets. </p>
