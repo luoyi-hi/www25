@@ -84,7 +84,7 @@ SynRTP is designed for **low-cost, high-frequency deployment**.
 
 ### 2.2 Sampling Cost & Offline/Online Separation
 We address the concern regarding the sampling number (`#sample`) used in GDRPO.
-* **Offline RL Training:** The multi-route sampling ($\#sample=16$) is strictly an **offline training strategy**. During this phase, the computational cost scales linearly with `#sample`, as shown in **Figure 1**. We selected `#sample=16` as the optimal convergence-efficiency tradeoff.
+* **Offline RL Training:** The multi-route sampling ('\#sample=16') is strictly an **offline training strategy**. During this phase, the computational cost scales linearly with `#sample`, as shown in **Figure 1**. We selected `#sample=16` as the optimal convergence-efficiency tradeoff.
 * **Online Serving:** Once the model is deployed, the policy $\pi_\theta$ is frozen. We use **Greedy Decoding** (or single-path sampling) for inference. No group sampling or advantage calculation is performed online. Thus, the heavy RL computation does not impact the online system latency.
 
 
@@ -131,10 +131,14 @@ To clarify the novelty of **GDRPO**, we provide a multi-dimensional comparison a
 
 
 We illustrate the gradient flow that enables the "Time Prediction" (TP) task to act as an implicit reward for the "Route Prediction" (RP) task.
-* **Route-Aware Context:** $s_i = \sum_{j \in \mathcal{V}} \pi_\theta(j|\hat{\pi}_{<i}) \cdot \tilde{q}_j$
-* **Gradient Path:**
-    $$\underbrace{\nabla_{\theta} \mathcal{L}_{Time}}_{\text{TP Loss}} \longrightarrow \underbrace{\hat{\delta}_i}_{\text{Time Pred}} \longrightarrow \underbrace{s_i}_{\text{Context}} \longrightarrow \underbrace{\pi_{\theta}(\cdot)}_{\text{Route Logits}} \longrightarrow \theta$$
-* **Mechanism:** By backpropagating $\mathcal{L}_{Time}$ through the probability-weighted context $s_i$, the model is forced to increase the probability of next-hop nodes that are spatially and temporally coherent. This acts as a **dense, differentiable reward** shaping mechanism, complementing the sparse RL signal.
+* **Route-Aware Context:** 
+  $$s_i = \sum_{j \in \mathcal{V}} \pi_\theta(j|\hat{\pi}_{<i}) \cdot \tilde{q}_j$$
+* **Synergy Gradient Flow:**
+$$\frac{\partial \mathcal{L}_{Time}}{\partial \theta} = \frac{\partial \mathcal{L}_{Time}}{\partial \hat{\delta}_i} \cdot \underbrace{\frac{\partial \hat{\delta}_i}{\partial s_i} \cdot \sum_{j} \tilde{q}_j}_{\text{Context Awareness}} \cdot \frac{\partial \pi_\theta(j|\dots)}{\partial \theta}$$
+
+* **Mechanism:** 
+By backpropagating $\mathcal{L}_{Time}$ through the probability-weighted context $s_i$, the model is forced to increase the probability of next-hop nodes that are spatially and temporally coherent. This acts as a **dense, differentiable reward** shaping mechanism, complementing the sparse RL signal.
+
 
 ---
 
