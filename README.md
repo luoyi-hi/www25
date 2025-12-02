@@ -132,7 +132,7 @@ To clarify the novelty of **GDRPO**, we provide a multi-dimensional comparison a
 
 We illustrate the gradient flow that enables the "Time Prediction" (TP) task to act as an implicit reward for the "Route Prediction" (RP) task.
 
-* **Route-Aware Context:** 
+* **Route-Aware Context:**
   
 $$s_i = \sum_{j \in \mathcal{V}} \pi_\theta(j|\hat{\pi}_{<i}) \cdot \tilde{q}_j$$
 
