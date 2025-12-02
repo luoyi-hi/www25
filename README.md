@@ -60,15 +60,18 @@ We further investigated the computational overhead introduced by the group sampl
 
 To ensure a comprehensive evaluation, we expanded our experimental scope to include five large-scale real-world datasets, which cover a wide spectrum of delivery scenarios, ranging from standard package logistics to high-urgency food delivery.
 
-<b>(1) Logistics Datasets (Cross-City Diversity)</b>
+<b>(1) Logistics Datasets: Geographic & Topological Robustness</b>
 
-The Logistics-SH, Logistics-CQ, Logistics-HZ, and Logistics-YT datasets are collected from the Cainiao Network. They span a substantial period of 6 months and cover four distinct Chinese cities: Shanghai (mega-metropolis), Chongqing (mountainous terrain), Hangzhou (dense urban), and Yantai (coastal city). This geographic diversity challenges the model with varying road network topologies and traffic densities.
+We employ four datasets (Logistics-SH, CQ, HZ, YT) from the Cainiao Network to test the model's stability across diverse urban environments.<b>Topological Diversity:</b> The datasets span from the dense, flat urban grids of Shanghai and Hangzhou (mega-metropolises) to the complex, mountainous terrain of Chongqing (often called the "Mountain City" with non-Euclidean road networks) and the coastal layout of Yantai.<b>Scale Variation: </b>Coverage ranges from heavy logistics hubs to smaller regional networks. This variety challenges the graph encoder to adapt to distinct road network structures and varying traffic densities without overfitting to a single city's layout.
 
-<b>(2) Food Delivery Dataset (Cross-Domain Diversity)</b>
 
-The Food-DL dataset, sourced from Ele.me, introduces a fundamentally different operational mode. As shown in the table, this dataset exhibits a significantly shorter AvgETA (27 minutes vs. 150 minutes for logistics) and a smaller AvgPackage (4.0 vs. 15.0). These statistics reflect the "instant" nature of food delivery, which requires the model to handle high-frequency, time-sensitive tasks with strict constraints, differing sharply from the batched delivery patterns in logistics.
 
-The inclusion of these diverse datasets confirms that our proposed SynRTP framework is not overfitted to a specific platform or city but is robust across varying business logic and operational scales.The dataset statistics are summarized in **Table 3**.
+<b>(2) Food Delivery Dataset: Cross-Platform & Cross-Domain Generalization</b>
+
+The Food-DL dataset, sourced from Ele.me, represents a fundamental shift in operational logic compared to logistics, serving as a critical test for cross-domain generalization.<b>Cross-Platform Distribution:</b>Originating from a different service provider (Ele.me vs. Cainiao), this dataset inherently contains different data recording standards and courier behavioral patterns, validating that SynRTP is not biased toward specific platform engineering.<b>Operational Paradigm Shift:</b> As shown in Table 3, Food-DL exhibits a drastically shorter AvgETA (27 min vs. 150 min) and lower AvgPackage density (4.0 vs. 15.0). This reflects the "instant" nature of food delivery, which prioritizes immediate responsiveness and strict time windows over the batch efficiency typical of logistics.
+
+
+By succeeding on both the high-latency, high-density logistics tasks and the low-latency, high-frequency food delivery tasks, SynRTP demonstrates a robust ability to generalize across varying business logics and operational constraints.The dataset statistics are summarized in **Table 3**.
 
 <p align="center"> <b>Table 3</b> Summary statistics of the datasets. AvgETA (in minutes) stands for the average arrival time per package. AvgPackage means the average package number of a courier per day. </p>
 
@@ -83,21 +86,16 @@ The inclusion of these diverse datasets confirms that our proposed SynRTP framew
 
 ### 2.1 Experimental Setting
 
-
 SynRTP is implemented in PyTorch and trained on a Tesla V100 (16 GB) GPU. After extensive hyperparameter tuning(details are provided in Sec 4.4 of the paper.), we select a hidden dimension $d_h=32$, a 3‑layer Graphormer encoder with 4 attention heads per layer, and a GDRPO group sampling size $G=16$. Policy updates use the Adam optimizer with a learning rate of $1\times10^{-4}$ and a PPO‑style clipping parameter $\epsilon=0.2$. Training adopts a two‑stage scheme: 4 epochs of supervised pre‑training followed by fine‑tuning with a batch size of 64. A cosine annealing scheduler controls the learning rate, and early stopping is applied with a patience of 11 epochs based on the validation KRC metric.
 
 
+### 2.2 Dataset Description
 
-### 1.2 Dataset Description
-
-We evaluate our approach using two large-scale real-world last-mile delivery datasets from LaDe[^1], collected by Cainiao Network, one of China's largest logistics platforms. The datasets comprise delivery records from ***Shanghai*** and ***Chongqing***, representing diverse urban environments. The **Table 1** summarizes key statistics. Each dataset spans six months and covers approximately 400 km<sup>2</sup>, with couriers serving as workers and delivery tasks as nodes in our formulation.
+We evaluate our approach using two large-scale real-world last-mile delivery datasets from LaDe[^1], collected by Cainiao Network, one of China's largest logistics platforms. The datasets comprise delivery records from ***Shanghai*** and ***Chongqing***, representing diverse urban environments. The summarizes key statistics. Each dataset spans six months and covers approximately 400 km<sup>2</sup>, with couriers serving as workers and delivery tasks as nodes in our formulation.
 
 [^1]: https://huggingface.co/datasets/Cainiao-AI/LaDe
 
-<p align="center"><b>Table&nbsp;1</b> Dataset statistics.</p>
-Statistics of the two subsets from LaDe used in our experiments. AvgETA stands for the average arrival time per package. AvgPackage means the average package number of a courier per day. The unit of AvgETA is minutes.  
 
-![Table 1](src/dataset.png)
 
 
 
@@ -108,6 +106,8 @@ Install environment dependencies using the following command:
 ```shell
 pip install -r requirements.txt
 ```
+
+### 2.3 Data Generation for Model Training
 
 After downloading the original datasets, please use the following command to generate the data required for model training:
 ```shell
@@ -126,7 +126,7 @@ To facilitate verification of the correctness of the model code, we provide a ve
 
 
 
-### 1.3 Training SynRTP Model
+### 2.4 Training SynRTP Model
 
 
 Run the following command to train the SynRTP:
@@ -136,21 +136,36 @@ python run.py
 ```
 
 
-### 1.4 Experimental Results
+### 2.5 Experimental Results
 
-<p align="center">
-<b>Table&nbsp;2</b> Performance comparison on route and time prediction. The upward arrow (↑) indicates that a higher value is better for metrics; the downward arrow (↓) indicates that a lower value is better for metrics. '--' means not available.
-</p>
+**Table 4** presents the comprehensive performance comparison of SynRTP against state-of-the-art baselines across all five datasets. Our model consistently achieves superior performance in both route prediction (KRC, LSD, HR@3) and time prediction (MAE, RMSE) tasks, demonstrating its robustness across diverse platforms and geographic environments.
 
-<p align="center"><b>Table&nbsp;2</b> Performance comparisons.</p>
+To address concerns regarding model stability and experimental variance, we conducted three independent runs for SynRTP to report the mean and standard deviation ($\text{mean} \pm \text{std}$). Due to the limited time window during the rebuttal phase, we were unable to re-train all baselines three times. However, to ensure a rigorous comparison, we prioritized conducting this statistical analysis for the strongest baseline (DRL4Route).
 
-![Table 2](src/results.png)
+As shown in **Table 5**, SynRTP exhibits low variance and consistently outperforms the strongest baseline across all metrics. We are fully committed to extending this multi-run statistical analysis to all remaining baselines in the final camera-ready version to further ensure the reproducibility of our results.
 
 
+<p align="center"> <b>Table 4</b> Performance comparison on route and time prediction across five datasets. </p>
 
-### 1.5 Baseline Reproduction
+![Table 4](src/results_sh_cq.png)
+![Table 5](src/results_food.png)
 
-The baseline reproduction method can be obtained through the following link：
-https://github.com/wenhaomin/LaDe/tree/master
+<p align="center"><b>Table 5</b> Stability analysis: Comparison of Mean ± Std between SynRTP and the best baseline (DRL4Route) over 3 independent runs.</p>
+
+![Table 6](src/mean.png)
+
+
+
+
+
+
+
+### 2.6 Baseline Reproduction
+
+Use the following commands to reproduce baseline models:
+```shell
+
+
+```
 
 
