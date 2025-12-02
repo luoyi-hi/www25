@@ -162,7 +162,7 @@ We evaluate our approach using five large-scale real-world datasets to ensure ro
 
 
 
-The original datasets can be downloaded from the following link: https://huggingface.co/datasets/Cainiao-AI/LaDe. and https://tianchi.aliyun.com/competition/entrance/231777/information.
+The original datasets can be downloaded from the following link: https://huggingface.co/datasets/Cainiao-AI/LaDe. and https://tianchi.aliyun.com/competition/entrance/231777/information. 
 
 Install environment dependencies using the following command:
 

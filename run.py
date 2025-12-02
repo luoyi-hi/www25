@@ -48,9 +48,9 @@ def get_common_params():
     parser.add_argument('--dataset', default='cq_dataset', type=str, help='the name of dataset')
     parser.add_argument('--pad_value', type=int, default=24, help=' the pad value of route label')
     parser.add_argument('--num_worker_logistics', type=int, default=5000, help='number of workers in logistics dataset')
-    parser.add_argument('--train_path', default='XXXXXXXXX/SynRTP/data/dataset/cq_dataset/train_small.npy',type=str, help='the path of train dataset')
-    parser.add_argument('--val_path', default='XXXXXXXXX/SynRTP/data/dataset/cq_dataset/val_small.npy',type=str, help='the path of val dataset')
-    parser.add_argument('--test_path', default='XXXXXXXXX/SynRTP/data/dataset/cq_dataset/test_small.npy', type=str, help='the path of test dataset')
+    parser.add_argument('--train_path', default='XXXXXXXXX/SynRTP/dataset/lade/cq_dataset/train_small.npy',type=str, help='the path of train dataset')
+    parser.add_argument('--val_path', default='XXXXXXXXX/SynRTP/dataset/lade/cq_dataset/val_small.npy',type=str, help='the path of val dataset')
+    parser.add_argument('--test_path', default='XXXXXXXXX/SynRTP/dataset/lade/cq_dataset/test_small.npy', type=str, help='the path of test dataset')
 
     ## common settings for deep models
     parser.add_argument('--batch_size', type=int, default=8, help='input batch size for training (default: 64)')
@@ -67,7 +67,7 @@ def get_common_params():
     parser.add_argument('--model', type=str, default='_SynRTP_', help='the model to use')
     parser.add_argument('--long_loss_weight', type=float, default=1.5)
     parser.add_argument('--rl_ratio', type=float, default=0.3) 
-    parser.add_argument('--pretrain_strategy', type=int, default=5 , help= ' number of pretrain epochs for strategy model (default: 5)')
+    parser.add_argument('--pretrain_strategy', type=int, default=4 , help= ' number of pretrain epochs for strategy model ')
 
 
     parser.add_argument('--node_fea_dim', type=int, default=8, help = 'dimension of node input feature')
