@@ -6,7 +6,7 @@ The architecture of SynRTP, as shown in Figure 1, comprises three key components
 
 <p align="center"><b>Figure&nbsp;1</b> Architecture of SynRTP.</p>
 
-
+6
 ## 1. Experimental Details
 
 ### 1.1 Experimental Setting
