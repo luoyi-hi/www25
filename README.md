@@ -1,16 +1,7 @@
 # SynRTP
 
-The architecture of SynRTP, as shown in Figure 1, comprises three key components: 1) A **spatiotemporal graph encoder** that captures both spatial dependencies among tasks and their temporal evolution. 2) A **synergistic route-time decoder** where the route policy and time predictor are jointly optimized through gradient cooperation (addressing gradient isolation). 3) A **RL-enhanced training strategy** combining GDRPO for enhanced route exploration with uncertainty-based multi-task balancing. test
-
-![Figure 1](./src/model.png)
-
-<p align="center"><b>Figure&nbsp;1</b> Architecture of SynRTP.</p>
-
-
 ## 1. Supplementary Experiment
-
 ---
-
 ### 1.1 Model Generalization on New Dataset
 
 To demonstrate the robust generalization capability of our proposed framework beyond the original experimental settings, we extended our evaluation to include three additional large-scale real-world datasets. These datasets were strategically selected to introduce significant diversity in terms of service platforms, business scenarios, and geographic environments:
@@ -39,11 +30,11 @@ As shown in Table 2, we compared SynRTP with representative baselines. Lightweig
 
 
 <b> (2) Scalability of Sampling Size $G$ </b>
-We further investigated the computational overhead introduced by the group sampling mechanism during the GDRPO phase. Figure 2 illustrates the relationship between training time per epoch and the sampling size $G$. The results demonstrate a Linear Scalability, where training time increases linearly rather than exponentially with $G$, indicating that the computational cost is predictable and controllable. Based on this analysis, we selected $G=16$ as the default setting to achieve an optimal balance between exploration sufficiency and training efficiency. Even with this setting, the training overhead remains within a manageable range, while the inference stage remains completely unaffected by the value of $G$.
+We further investigated the computational overhead introduced by the group sampling mechanism during the GDRPO phase. Figure 1 illustrates the relationship between training time per epoch and the sampling size $G$. The results demonstrate a Linear Scalability, where training time increases linearly rather than exponentially with $G$, indicating that the computational cost is predictable and controllable. Based on this analysis, we selected $G=16$ as the default setting to achieve an optimal balance between exploration sufficiency and training efficiency. Even with this setting, the training overhead remains within a manageable range, while the inference stage remains completely unaffected by the value of $G$.
 
-![Figure 2](src/results_sample.png)
+![Figure ](src/results_sample.png)
 
-<p align="center"><b>Figure&nbsp;2</b> Computational overhead analysis with varying sampling numbers <i>G</i> </p>
+<p align="center"><b>Figure&nbsp;1</b> Computational overhead analysis with varying sampling numbers <i>G</i> </p>
 
 
 
@@ -136,7 +127,7 @@ By succeeding on both the high-latency, high-density logistics tasks and the low
 
 
 ## 2. Experimental Details
-
+---
 ### 2.1 Implementation Details & Fairness Protocol
 
 To ensure reproducibility and rigorous fair comparison, all experiments were conducted on a uniform hardware platform equipped with a single Tesla V100 (16 GB) GPU. We implemented SynRTP using PyTorch. For all baseline models, we adopted a standardized evaluation protocol to eliminate implementation bias:
