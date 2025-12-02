@@ -1,10 +1,31 @@
 # SynRTP
 
-Test
+
 
 ## 1. Supplementary Experiment
 ---
-### 1.1 Model Generalization on New Dataset
+
+### 1.1 New Datasets
+
+To ensure a comprehensive evaluation, we expanded our experimental scope to include five large-scale real-world datasets, which cover a wide spectrum of delivery scenarios, ranging from standard package logistics to high-urgency food delivery.
+
+<b>(1) Logistics Datasets: Geographic & Topological Robustness</b>
+We employ four datasets (Logistics-SH, CQ, HZ, YT) from the Cainiao Network to test the model's stability across diverse urban environments.<b>Topological Diversity:</b> The datasets span from the dense, flat urban grids of Shanghai and Hangzhou (mega-metropolises) to the complex, mountainous terrain of Chongqing (often called the "Mountain City" with non-Euclidean road networks) and the coastal layout of Yantai.<b>Scale Variation: </b>Coverage ranges from heavy logistics hubs to smaller regional networks. This variety challenges the graph encoder to adapt to distinct road network structures and varying traffic densities without overfitting to a single city's layout.
+
+
+
+<b>(2) Food Delivery Dataset: Cross-Platform & Cross-Domain Generalization</b>
+The Food-DL dataset, sourced from Ele.me, represents a fundamental shift in operational logic compared to logistics, serving as a critical test for cross-domain generalization.<b>Cross-Platform Distribution:</b>Originating from a different service provider (Ele.me vs. Cainiao), this dataset inherently contains different data recording standards and courier behavioral patterns, validating that SynRTP is not biased toward specific platform engineering.<b>Operational Paradigm Shift:</b> As shown in Table 3, Food-DL exhibits a drastically shorter AvgETA (27 min vs. 150 min) and lower AvgPackage density (4.0 vs. 15.0). This reflects the "instant" nature of food delivery, which prioritizes immediate responsiveness and strict time windows over the batch efficiency typical of logistics.
+
+
+By succeeding on both the high-latency, high-density logistics tasks and the low-latency, high-frequency food delivery tasks, SynRTP demonstrates a robust ability to generalize across varying business logics and operational constraints.The dataset statistics are summarized in Table 3.
+
+<p align="center"> <b>Table&nbsp;3</b> Summary statistics of the datasets. AvgETA (in minutes) stands for the average arrival time per package. AvgPackage means the average package number of a courier per day. </p>
+
+![Table 3](src/results_datasets.png)
+
+
+### 1.2 Model Generalization on New Dataset
 
 To demonstrate the robust generalization capability of our proposed framework beyond the original experimental settings, we extended our evaluation to include three additional large-scale real-world datasets. These datasets were strategically selected to introduce significant diversity in terms of service platforms, business scenarios, and geographic environments:
 
@@ -104,24 +125,7 @@ The $\mathcal{L}_{\text{CrossEntropy}}$ term acts as a regularizer, tethering th
 In summary, while GDRPO draws inspiration from the clipping mechanism of PPO to ensure numerical stability, it fundamentally re-engineers the advantage estimation and baseline construction. By replacing the learned critic with a **deterministic greedy baseline** and aligning the reward signal directly with the **sequence-level LSD metric**, GDRPO transforms the generic policy gradient framework into a specialized solver for high-dimensional combinatorial routing problems. This design directly addresses the "Gradient Isolation" and "Limited Exploration" challenges highlighted in the introduction, offering a robust alternative to standard RL baselines.
 
 
-### 1.4 Statistics on Datasets
 
-To ensure a comprehensive evaluation, we expanded our experimental scope to include five large-scale real-world datasets, which cover a wide spectrum of delivery scenarios, ranging from standard package logistics to high-urgency food delivery.
-
-<b>(1) Logistics Datasets: Geographic & Topological Robustness</b>
-We employ four datasets (Logistics-SH, CQ, HZ, YT) from the Cainiao Network to test the model's stability across diverse urban environments.<b>Topological Diversity:</b> The datasets span from the dense, flat urban grids of Shanghai and Hangzhou (mega-metropolises) to the complex, mountainous terrain of Chongqing (often called the "Mountain City" with non-Euclidean road networks) and the coastal layout of Yantai.<b>Scale Variation: </b>Coverage ranges from heavy logistics hubs to smaller regional networks. This variety challenges the graph encoder to adapt to distinct road network structures and varying traffic densities without overfitting to a single city's layout.
-
-
-
-<b>(2) Food Delivery Dataset: Cross-Platform & Cross-Domain Generalization</b>
-The Food-DL dataset, sourced from Ele.me, represents a fundamental shift in operational logic compared to logistics, serving as a critical test for cross-domain generalization.<b>Cross-Platform Distribution:</b>Originating from a different service provider (Ele.me vs. Cainiao), this dataset inherently contains different data recording standards and courier behavioral patterns, validating that SynRTP is not biased toward specific platform engineering.<b>Operational Paradigm Shift:</b> As shown in Table 3, Food-DL exhibits a drastically shorter AvgETA (27 min vs. 150 min) and lower AvgPackage density (4.0 vs. 15.0). This reflects the "instant" nature of food delivery, which prioritizes immediate responsiveness and strict time windows over the batch efficiency typical of logistics.
-
-
-By succeeding on both the high-latency, high-density logistics tasks and the low-latency, high-frequency food delivery tasks, SynRTP demonstrates a robust ability to generalize across varying business logics and operational constraints.The dataset statistics are summarized in Table 3.
-
-<p align="center"> <b>Table&nbsp;3</b> Summary statistics of the datasets. AvgETA (in minutes) stands for the average arrival time per package. AvgPackage means the average package number of a courier per day. </p>
-
-![Table 3](src/results_datasets.png)
 
 
 
