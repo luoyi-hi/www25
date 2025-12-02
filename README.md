@@ -84,9 +84,21 @@ By succeeding on both the high-latency, high-density logistics tasks and the low
 
 ## 2. Experimental Details
 
-### 2.1 Experimental Setting
+### 2.1 Implementation Details & Fairness Protocol
 
-SynRTP is implemented in PyTorch and trained on a Tesla V100 (16 GB) GPU. After extensive hyperparameter tuning(details are provided in Sec 4.4 of the paper.), we select a hidden dimension $d_h=32$, a 3‑layer Graphormer encoder with 4 attention heads per layer, and a GDRPO group sampling size $G=16$. Policy updates use the Adam optimizer with a learning rate of $1\times10^{-4}$ and a PPO‑style clipping parameter $\epsilon=0.2$. Training adopts a two‑stage scheme: 4 epochs of supervised pre‑training followed by fine‑tuning with a batch size of 64. A cosine annealing scheduler controls the learning rate, and early stopping is applied with a patience of 11 epochs based on the validation KRC metric.
+To ensure reproducibility and rigorous fair comparison, all experiments were conducted on a uniform hardware platform equipped with a single Tesla V100 (16 GB) GPU. We implemented SynRTP using PyTorch. For all baseline models, we adopted a standardized evaluation protocol to eliminate implementation bias:
+
+<b>(1) Standardized Benchmark Configurations</b>
+
+<b> LaDe Benchmark Baselines: </b> Most baselines (including DeepRoute, Graph2Route, L2R, etc.) and the datasets used in this paper are sourced from the open-source LaDe Benchmark repository. To ensure our results are directly comparable with community standards, we strictly utilized the official implementations and default optimal hyperparameter configurations provided by the LaDe repository. <b>Independent Baselines: </b>For baselines not included in LaDe (i.e., DutyTTE and MRGRP), we strictly adhered to the same principle: utilizing their respective official open-source codes and adopting the default optimal hyperparameter combinations recommended by the original authors. This strategy ensures that every baseline is evaluated at its intended peak performance capability, avoiding any potential bias from subjective hyperparameter tuning.
+
+<b>(2) Strict Fairness Control </b> 
+
+Beyond model configurations, we enforced a unified training protocol across all methods to ensure no model received an unfair advantage: <b> Input Consistency.</b>  All models utilize the exact same set of input features (spatial coordinates, temporal timestamps, and courier profiles). We ensured that no baseline was handicapped by missing features, nor did any model benefit from extra information unavailable to others. <b> Termination Criterion.</b> To prevent over-training or under-training biases, we applied a consistent Early Stopping mechanism across all models. Training terminates if the validation metric (KRC) does not improve for a patience of 11 epochs.
+
+<b>(3) SynRTP Settings:</b> 
+
+For our proposed SynRTP, we selected hyperparameters based on validation set performance: a hidden dimension $d_h=32$, a 3-layer Graphormer encoder with 4 attention heads, and a GDRPO group sampling size $G=16$. The model is trained using a two-stage scheme with the Adam optimizer ($lr=1\times10^{-4}$).
 
 
 ### 2.2 Dataset Description
@@ -149,7 +161,7 @@ To address concerns regarding model stability and experimental variance, we cond
 ![Table 4](src/results_sh_cq.png)
 ![Table 5](src/results_food.png)
 
-<p align="center"><b>Table 5</b> Stability analysis: Comparison of Mean ± Std between SynRTP and the best baseline (DRL4Route) over 3 independent runs.</p>
+<p align="center"><b>Table 5</b> Stability analysis: Comparison of Mean ± Std between SynRTP over 3 independent runs.</p>
 
 ![Table 6](src/mean.png)
 
