@@ -21,7 +21,7 @@ Logistics-HZ & Logistics-YT (Geographic Generalization): Sourced from two additi
 
 As shown in Table 1, SynRTP consistently outperforms state-of-the-art baselines across all three new datasets. Notably, in the cross-domain Food-DL scenario, our model achieves a substantial performance gain, reducing the MAE of time prediction by 23.32% compared to the best baseline while maintaining superior route prediction accuracy. These results confirm that SynRTP generalizes well to diverse delivery environments and is not limited to specific platforms or city patterns.
 
-<p align="center">   <b>Table 1</b> Performance comparisons on three additional datasets (Food-DL, Logistics-HZ, and Logistics-YT). </p>
+<p align="center">   <b>Table&nbsp;1</b> Performance comparisons on three additional datasets (Food-DL, Logistics-HZ, and Logistics-YT). </p>
 
 ![Table 1](src/results_food.png)
 
@@ -33,17 +33,17 @@ To address concerns regarding the computational complexity and deployment feasib
 <b>(1) Inference Efficiency and Resource Usage</b>
 As shown in Table 2, we compared SynRTP with representative baselines. Lightweight Architecture: SynRTP exhibits remarkable model compactness with only 0.2M parameters, significantly fewer than other joint RTP models (e.g., MRGRP requires 5.7M). Fast Inference Speed: Crucially for real-time logistics systems, our model achieves SOTA-level inference efficiency (e.g., 10.6s for the entire test set on Food-DL), which is comparable to simple greedy heuristics and significantly faster than complex deep learning baselines like Graph2Route or MRGRP. Low Memory Footprint: During the inference phase, the GPU memory consumption is minimal (0.10 GB), making the model highly suitable for deployment on resource-constrained edge devices or high-concurrency cloud environments. It is important to note that while the reinforcement learning process (GDRPO) increases training time, this is strictly an offline cost that does not impact online service latency.
 
-<p align="center"> <b>Table 2</b> Efficiency comparison across different datasets. </p>
+<p align="center"> <b>Table&nbsp;2</b> Efficiency comparison across different datasets. </p>
 
 ![Table 2](src/results_eff.png)
 
 
 <b> (2) Scalability of Sampling Size $G$ </b>
-We further investigated the computational overhead introduced by the group sampling mechanism during the GDRPO phase. Figure R1 illustrates the relationship between training time per epoch and the sampling size $G$. The results demonstrate a Linear Scalability, where training time increases linearly rather than exponentially with $G$, indicating that the computational cost is predictable and controllable. Based on this analysis, we selected $G=16$ as the default setting to achieve an optimal balance between exploration sufficiency and training efficiency. Even with this setting, the training overhead remains within a manageable range, while the inference stage remains completely unaffected by the value of $G$.
+We further investigated the computational overhead introduced by the group sampling mechanism during the GDRPO phase. Figure 2 illustrates the relationship between training time per epoch and the sampling size $G$. The results demonstrate a Linear Scalability, where training time increases linearly rather than exponentially with $G$, indicating that the computational cost is predictable and controllable. Based on this analysis, we selected $G=16$ as the default setting to achieve an optimal balance between exploration sufficiency and training efficiency. Even with this setting, the training overhead remains within a manageable range, while the inference stage remains completely unaffected by the value of $G$.
 
-![Figure 1](src/results_sample.png)
+![Figure 2](src/results_sample.png)
 
-<p align="center"><b>Figure 1</b> Computational overhead analysis with varying sampling numbers <i>G</i> </p>
+<p align="center"><b>Figure&nbsp;2</b> Computational overhead analysis with varying sampling numbers <i>G</i> </p>
 
 
 
@@ -126,7 +126,7 @@ The Food-DL dataset, sourced from Ele.me, represents a fundamental shift in oper
 
 By succeeding on both the high-latency, high-density logistics tasks and the low-latency, high-frequency food delivery tasks, SynRTP demonstrates a robust ability to generalize across varying business logics and operational constraints.The dataset statistics are summarized in Table 3.
 
-<p align="center"> <b>Table 3</b> Summary statistics of the datasets. AvgETA (in minutes) stands for the average arrival time per package. AvgPackage means the average package number of a courier per day. </p>
+<p align="center"> <b>Table&nbsp;3</b> Summary statistics of the datasets. AvgETA (in minutes) stands for the average arrival time per package. AvgPackage means the average package number of a courier per day. </p>
 
 ![Table 3](src/results_datasets.png)
 
@@ -206,12 +206,12 @@ Table 4 presents the comprehensive performance comparison of SynRTP against stat
 To address concerns regarding model stability and experimental variance, we conducted three independent runs for SynRTP to report the mean and standard deviation ($\text{mean} \pm \text{std}$). Due to the limited time window during the rebuttal phase, we were unable to re-train all baselines three times. However, as shown in Table 5, SynRTP exhibits low variance across independent runs, demonstrating the inherent stability of our proposed framework. We are fully committed to extending this multi-run statistical analysis to all remaining baselines in the final camera-ready version to further ensure the reproducibility and rigorous comparison of our results.
 
 
-<p align="center"> <b>Table 4</b> Performance comparison on route and time prediction across five datasets. </p>
+<p align="center"> <b>Table&nbsp;4</b> Performance comparison on route and time prediction across five datasets. </p>
 
 ![Table 4](src/results_sh_cq.png)
 ![Table 5](src/results_food.png)
 
-<p align="center"><b>Table 5</b> Stability analysis: Comparison of Mean ± Std between SynRTP over 3 independent runs.</p>
+<p align="center"><b>Table&nbsp;5</b> Stability analysis: Comparison of Mean ± Std between SynRTP over 3 independent runs.</p>
 
 ![Table 6](src/mean.png)
 
