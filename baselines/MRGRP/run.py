@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--dataset_name', type=str, default='pickup_yt_dataset', help='dataset name')  
+    parser.add_argument('--dataset_name', type=str, default='yt_dataset', help='dataset name')  
     parser.add_argument('--model', type=str, default='mrgrp', help='model name')
     parser.add_argument('--device', type=str, default='cuda', help='device')
     parser.add_argument('--memory_size', type=int, default=9000, help='memory size')
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     parser.add_argument('--parallel', action='store_true', help='parallel')
     parser.add_argument('--force', action='store_true', help='force')
     parser.add_argument('--cpu_num', type=int, default=1, help='cpu num')
-    parser.add_argument('--batch_size', type=int, default=64, help='256 batch size')
+    parser.add_argument('--batch_size', type=int, default=8, help='256 batch size')
     parser.add_argument('--epochs', type=int, default=100, help='epochs')
     parser.add_argument('--train_use_ratio', type=float, default=1.0, help='use train ratio')
     parser.add_argument('--val_use_ratio', type=float, default=1.0, help='use val ratio')
@@ -104,7 +104,11 @@ if __name__ == '__main__':
     args, _ = parser.parse_known_args()
     params = vars(args)
 
-    datasets = ["pickup_yt_dataset"]  # the name of datasets
+    datasets = [args.dataset_name]
+    parser.add_argument("--train_path", type=str, default=None)
+    parser.add_argument("--val_path", type=str, default=None)
+    parser.add_argument("--test_path", type=str, default=None)
+    # the name of datasets
     args_lst = []
     for batch_size in [1024]:
         for dataset in datasets:

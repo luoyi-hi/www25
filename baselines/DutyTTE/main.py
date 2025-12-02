@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     args, _ = parser.parse_known_args()
     params = vars(args)
-    datasets = ['pickup_yt_dataset'] # the name of datasets
+    datasets = [args.dataset_name]  # the name of datasets
     args_lst = []
 
     for dataset in datasets:
@@ -42,7 +42,6 @@ if __name__ == "__main__":
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
         print(device)
-
 
         if args.method == 'MoEUQ':
             from uncertainty_quantification.trainer import Trainer

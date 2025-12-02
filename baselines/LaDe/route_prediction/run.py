@@ -34,11 +34,12 @@ if __name__ == "__main__":
     params = vars(get_params())
     params['cuda_id'] = 1
     params['is_test'] = False
-    datasets = ['pickup_yt_dataset'] # the name of datasets
+    datasets = [params["dataset"]]  # the name of datasets
+    target_models = [params['model']]
 
     args_lst = []
     # for model in ['Distance-Greedy', 'Time-Greedy',  'osqure', 'deeproute', 'graph2route' , 'drl4route', 'm2g4rtp_pickup']:
-    for model in ['drl4route']:
+    for model in target_models:
         if model in ['Distance-Greedy', 'Time-Greedy']:
             for dataset in datasets:
                 basic_params = dict_merge([params, {'model': model,'dataset': dataset}])

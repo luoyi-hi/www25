@@ -33,13 +33,16 @@ def get_params():
 
 if __name__ == "__main__":
     params = vars(get_params())
-    datasets = ["pickup_yt_dataset"]  # the name of datasets
+    datasets = [params["dataset"]]  # the name of datasets
+    target_models = [params["model"]]
 
     args_lst = []
     params['cuda_id'] = 0
     params['is_test'] = False
     params['inference'] = False
-    for model in ['knn']:  # ['speed','lgb','knn','mlp','ranketpa_route', 'ranketpa_time']
+    for (
+        model
+    ) in target_models:  # ['speed','lgb','knn','mlp','ranketpa_route', 'ranketpa_time']
         if model in ['speed', 'lgb', 'knn']:
             for dataset in datasets:
                 basic_params = dict_merge([params, {'model': model,'dataset': dataset}])

@@ -57,6 +57,6 @@ def get_argparser() -> argparse.ArgumentParser:
     parser.add_argument("-num_lambdas", type=int, default=200)
 
     # eval config
-    parser.add_argument("-early_stop", type=int, help="patience of early stop", default=3)
+    parser.add_argument("-early_stop", type=int, help="patience of early stop", default=11)
 
     return parser

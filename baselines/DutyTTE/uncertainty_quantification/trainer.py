@@ -83,6 +83,18 @@ class CustomDataset(Dataset):
 
 import pickle
 
+
+def get_workspace():
+    """
+    get the workspace path
+    :return:
+    """
+    cur_path = os.path.abspath(__file__)
+    file = os.path.dirname(cur_path)
+    file = os.path.dirname(file)
+    return file
+ws = get_workspace()
+
 class Trainer:
     def __init__(self, model: nn.Module, device, args):
         self.model = model
@@ -95,19 +107,25 @@ class Trainer:
         print('local time: ', local_time)
         optimizer = torch.optim.Adam(self.model.parameters(), args.lr)
 
-        pickle_file_path_train = f'./DutyTE/{args.dataset_name}/train.pkl'
+        pickle_file_path_train = os.path.join(
+            ws, f"datasets/dutytte/{args.dataset_name}/train.pkl"
+        )
         if os.path.exists(pickle_file_path_train):
             with open(pickle_file_path_train, 'rb') as f:
                 data_to_load_train = pickle.load(f)
         print('loaded train data: ', pickle_file_path_train)
 
-        pickle_file_path_val = f'./DutyTE/{args.dataset_name}/val.pkl'
+        pickle_file_path_val = os.path.join(
+            ws, f"datasets/dutytte/{args.dataset_name}/val.pkl"
+        )
         if os.path.exists(pickle_file_path_val):
             with open(pickle_file_path_val, 'rb') as f:
                 data_to_load_val = pickle.load(f)
         print('loaded val data: ', pickle_file_path_val)
 
-        pickle_file_path_test = f'./DutyTE/{args.dataset_name}/test.pkl'
+        pickle_file_path_test = os.path.join(
+            ws, f"datasets/dutytte/{args.dataset_name}/test.pkl"
+        )
 
         if os.path.exists(pickle_file_path_test):
             with open(pickle_file_path_test, 'rb') as f:
@@ -266,7 +284,6 @@ class Trainer:
         self.model.load_state_dict(torch.load(best_model_path))
         print('testing, best val model loaded')
 
-
         predicts = []
         predicts_bias_lower = []
         predicts_bias_upper = []
@@ -300,7 +317,6 @@ class Trainer:
             test_mape = mape_(label, predicts)
             test_mse = mse(label, predicts)
             test_mae = mae(label, predicts)
-
 
             acc_eta_list = [10, 20, 30, 40, 50, 60]
 

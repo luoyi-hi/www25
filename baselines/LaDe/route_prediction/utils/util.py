@@ -159,12 +159,23 @@ def dict_merge(dict_list = []):
         dict_ = {**dict_, **dic}
     return dict_
 
+
+def get_workspace():
+    """
+    get the workspace path
+    :return:
+    """
+    cur_path = os.path.abspath(__file__)
+    file = os.path.dirname(cur_path)
+    file = os.path.dirname(file)
+    return file
+ws = get_workspace()
+
 def get_dataset_path(params = {}):
-    dataset = params['dataset']  
-    file = f'./LaDe/dataset/{dataset}'
-    train_path = file + f'/train.npy'
-    val_path = file + f'/val.npy'
-    test_path = file + f'/test.npy'
+    file = os.path.join(ws, f"datasets/lade/{params['dataset']}")
+    train_path = file + f'/train_mini.npy'
+    val_path = file + f'/val_mini.npy'
+    test_path = file + f'/test_mini.npy'
     return train_path, val_path, test_path
 
 
@@ -213,7 +224,7 @@ def save2file_meta(params, file_name, head):
         # write_to_hdfs(file_name, data)
 
 
-#----- Training Utils----------
+# ----- Training Utils----------
 import argparse
 import torch
 from torch.optim import Adam
@@ -227,12 +238,12 @@ def get_common_params():
     # dataset
     parser.add_argument('--min_task_num', type=int, default=0, help = 'minimal number of task')
     parser.add_argument('--max_task_num',  type=int, default=25, help = 'maxmal number of task')
-    parser.add_argument('--dataset', default='pickup_yt_dataset', type=str, help='food_cou or logistics')
+    parser.add_argument('--dataset', default='yt_dataset', type=str, help='food_cou or logistics')
     parser.add_argument('--pad_value', type=int, default=24, help='logistics: max_num - 1, pd: max_num + 1')
     parser.add_argument('--num_worker_logistics', type=int, default=10000, help='10000 number of workers in logistics dataset')
-
+    parser.add_argument('--model', type=str, default='drl4route', help='model name: Distance-Greedy, drl4route, etc.')
     ## common settings for deep models
-    parser.add_argument('--batch_size', type=int, default=64, help='input batch size for training (default: 256)')
+    parser.add_argument('--batch_size', type=int, default=8, help='input batch size for training (default: 256)')
     parser.add_argument('--num_epoch', type=int, default=100, help='number of epochs to train (80 default: 1000)')
     parser.add_argument('--lr', type=float, default=0.0001, metavar='LR', help='learning rate (default: 1e-4)')
     parser.add_argument('--seed', type=int, default=2021, metavar='S', help='random seed (default: 6)')
@@ -385,7 +396,6 @@ def get_nonzeros_eta(pred_steps, label_steps, label_len, pred_len, eta_pred, eta
            torch.LongTensor(eta_pred_list), torch.LongTensor(eta_label_list)
 
 
-
 def get_model_function(model):
 
     if model == "deeproute":
@@ -452,5 +462,3 @@ def run(params, DATASET, PROCESS_BATCH, TEST_MODEL, collate_fn = None):
 if __name__ == '__main__':
 
     pass
-
-

@@ -85,12 +85,24 @@ def dict_merge(dict_list = []):
         dict_ = {**dict_, **dic}
     return dict_
 
+
+def get_workspace():
+    """
+    get the workspace path
+    :return:
+    """
+    cur_path = os.path.abspath(__file__)
+    file = os.path.dirname(cur_path)
+    file = os.path.dirname(file)
+    return file
+ws = get_workspace()
+
+
 def get_dataset_path(params = {}):
-    dataset = params['dataset']
-    file = f'/dataspace/lz/LaDe/dataset/{dataset}'
-    train_path = file + f'/train.npy'
-    val_path = file + f'/val.npy'
-    test_path = file + f'/test.npy'
+    file = os.path.join(ws, f"datasets/lade/{params['dataset']}")
+    train_path = file + f"/train_mini.npy"
+    val_path = file + f"/val_mini.npy"
+    test_path = file + f"/test_mini.npy"
     return train_path, val_path, test_path
 
 def write_list_list(fp, list_, model="a", sep=","):
@@ -138,7 +150,7 @@ def save2file_meta(params, file_name, head):
         data = [params[k] for k in head]
         csv_file.writerow(data)
 
-#----- Training Utils----------
+# ----- Training Utils----------
 import argparse
 import random, torch
 from torch.optim import Adam
@@ -153,11 +165,17 @@ def get_common_params():
     # dataset
     parser.add_argument('--min_task_num', type=int, default=0, help = 'minimal number of task')
     parser.add_argument('--max_task_num',  type=int, default=25, help = 'maxmal number of task')
-    parser.add_argument('--dataset', default='pickup_yt_dataset', type=str, help='food_cou or logistics')#logistics_0831, logistics_decode_mask
+    parser.add_argument('--dataset', default='yt_dataset', type=str, help='food_cou or logistics')#logistics_0831, logistics_decode_mask
     parser.add_argument('--pad_value', type=int, default=24, help='logistics: max_num - 1, pd: max_num + 1')
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="mlp",
+        help="model name",
+    )
 
     ## common settings for deep models
-    parser.add_argument('--batch_size', type=int, default=64, help='input batch size for training (default: 256)')
+    parser.add_argument('--batch_size', type=int, default=8, help='input batch size for training (default: 256)')
     parser.add_argument('--num_epoch', type=int, default=100, help=' 80 number of epochs to train (default: 1000)')
     parser.add_argument('--lr', type=float, default=0.0001, metavar='LR', help='learning rate (default: 1e-4)')
     parser.add_argument('--seed', type=int, default=2021, metavar='S', help='random seed (default: 6)')

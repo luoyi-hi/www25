@@ -227,28 +227,19 @@ pip install -r requirements.txt
 
 After downloading the original datasets, please use the following command to generate the data required for model training:
 ```shell
-python data_processing.py
+bash DataPipeline.sh
 ```
 
-To facilitate verification of the correctness of the model code, we provide a very small dataset, extracting a batch size of 8 from each of the original data training set, validation set and test set (the default batch size of the model dataset is 64). The data structure should be like:
-/data/dataset/
-
-├── cq_dataset    
-│   ├── train_small.npy   
-│   └── ...    
-└── sh_dataset  
-    ├── train_small.npy  
-    └── ...  
-
+To facilitate verification of the correctness of the model code, we provide a very small dataset of Logistics-YT, extracting a batch size of 8 from each of the original data training set, validation set and test set (the default batch size of the model dataset is 64).
 
 
 ### 6.4 Training SynRTP Model
 
 
-Run the following command to train the SynRTP:
+Taking the Logistics-YT dataset as an example. Run the following command to train the SynRTP. 
 
 ```shell
-python run.py
+python run.py --dataset yt_dataset
 ```
 
 
@@ -256,9 +247,49 @@ python run.py
 
 ### 6.5 Baseline Reproduction
 
-Use the following commands to reproduce baseline models:
+Taking the Logistics-YT dataset as an example. Use the following commands to reproduce baseline models:
 ```shell
+# Time-Greedy
+python baselines/LaDe/route_prediction/run.py --model Time-Greedy --dataset yt_dataset
 
+# Distance-Greedy
+python baselines/LaDe/route_prediction/run.py --model Distance-Greedy --dataset yt_dataset
+
+# Osquare
+python baselines/LaDe/route_prediction/run.py --model Osquare --dataset yt_dataset
+
+# DeepRoute
+python baselines/LaDe/route_prediction/run.py --model DeepRoute --dataset yt_dataset
+
+# Graph2Route
+python baselines/LaDe/route_prediction/run.py --model Graph2Route --dataset yt_dataset
+
+# DRL4Route
+python baselines/LaDe/route_prediction/run.py --model DRL4Route --dataset yt_dataset
+
+# Static-ETA
+python baselines/LaDe/time_prediction/run.py --model Static-ETA --dataset yt_dataset
+
+# KNN-MultiETA
+python baselines/LaDe/time_prediction/run.py --model KNN-MultiETA --dataset yt_dataset
+
+# XGB-MultiETA
+python baselines/LaDe/time_prediction/run.py --model XGB-MultiETA --dataset yt_dataset
+
+# DeepETA
+python baselines/LaDe/time_prediction/run.py --model DeepETA --dataset yt_dataset
+
+# DutyTTE
+python baselines/DutyTTE/main.py --dataset_name yt_dataset
+
+# RankETPA
+python baselines/LaDe/time_prediction/run.py --model RankETPA --dataset yt_dataset
+
+# M2G4RTP
+python baselines/LaDe/route_prediction/run.py --model M2G4RTP --dataset yt_dataset
+
+# MRGRP
+python baselines/MRGRP/run.py --dataset_name yt_dataset
 
 ```
 
