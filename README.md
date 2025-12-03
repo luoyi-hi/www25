@@ -2,8 +2,8 @@
 
 ## Reproducibility & Source Code
 To ensure full reproducibility and facilitate future research, we have released the complete source code for **SynRTP** in this anonymous repository.
-* **SynRTP Implementation:** Pre-training, GDRPO fine-tuning, and Synergistic Inference, see '/algorithm/'.
-* **Baseline Reproduction:** All baselines code are released in '/baselines/'. The performance comparisons reported in our paper are strictly fair and reproducible.
+* **SynRTP Implementation:** Pre-training, GDRPO fine-tuning, and Synergistic Inference, see `/algorithm/`.
+* **Baseline Reproduction:** All baselines are released in `/baselines/`. The performance comparisons reported in our paper are strictly fair and reproducible.
 
 ---
 
