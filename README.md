@@ -17,13 +17,13 @@ To ensure reproducibility and facilitate future research, we provide the complet
 
 ### 1.1 Extended Dataset
 
-We have expanded the evaluation to **five** distinct datasets to verify robustness. The detailed statistics are provided in **Table 1**. The three newly added datasets are:
+We have expanded the evaluation to `five` distinct datasets to verify robustness. The detailed statistics are provided in `Table 1`. The three newly added datasets are:
 
 * **Cainiao Platform, Logistics:** `Logistics-HZ` (Hangzhou) and `Logistics-YT` (Yantai).
 * **Ele.me Platform, Food Delivery:** [`Food-DL`](https://tianchi.aliyun.com/competition/entrance/231777/information) (Dalian).
 
 
-<p align="center"> <b>Table&nbsp;1</b> Summary statistics of the datasets. AvgETA (in minutes) stands for the average arrival time per package. AvgPackage means the average package number of a courier per day. </p>
+<p align="left"> <b>Table&nbsp;1</b> Summary statistics of the datasets. AvgETA (in minutes) stands for the average arrival time per package. AvgPackage means the average package number of a courier per day. </p>
 
 ![Table 3](src/results_datasets.png)
 
@@ -33,7 +33,7 @@ All datasets are strictly anonymized. User IDs and order IDs are hashed, and GPS
 
 #### B. Data Diversity
 
-As shown in **Table 1**, these datasets cover a wide spectrum of business patterns, city scales, and urban environments.
+As shown in `Table 1`, these datasets cover a wide spectrum of business patterns, city scales, and urban environments.
 
 **i) Business Logic Diversity.**
 Across logistics and food-delivery scenarios, SynRTP is exposed to a wide range of routing and timing patterns.
@@ -44,9 +44,9 @@ Across logistics and food-delivery scenarios, SynRTP is exposed to a wide range 
 **ii) City Scale Diversity.**
 To ensure the model generalizes across different administrative scales and population densities, we selected cities ranging from megacities to major regional hubs:
 
-* **Mega-Cities (>20M):** Shanghai (SH) and Chongqing (CQ) represent the highest tier of urban density and complexity.
-* **Large Metropolitan Area (10–20M):** Hangzhou (HZ) is a rapidly growing new-tier city with a population exceeding 10 million.
-* **Major Regional Cities (5–10M):** Yantai (YT) and Dalian (DL) are important regional economic centers, testing the model’s adaptability to medium-to-large urban networks.
+* **Mega-Cities (>20 Million):** Shanghai (SH) and Chongqing (CQ) represent the highest tier of urban density and complexity.
+* **Large Metropolitan Area (10~20 Million):** Hangzhou (HZ) is a rapidly growing new-tier city with a population exceeding 10 million.
+* **Major Regional Cities (5~10 Million):** Yantai (YT) and Dalian (DL) are important regional economic centers, testing the model’s adaptability to medium-to-large urban networks.
 
 **iii) Urban Topology Diversity.**
 The five cities also exhibit diverse urban forms and road-network topologies:
@@ -65,19 +65,19 @@ We conducted an exhaustive search for international last-mile datasets. However,
 
 ### 1.2 Comprehensive Results Analysis
 
-We present the full performance comparison across all five datasets in 'Table 2'. 
+We present the full performance comparison across all five datasets in `Table 2`. 
 
-<p align="center"> <b>Table&nbsp;2</b> Performance comparison on route and time prediction. An upward arrow ($\uparrow$) indicates that higher values are better, while a downward arrow ($\downarrow$) indicates that lower values are better. “--” denotes unavailable results. For SynRTP, we report the mean over three runs, with $\pm\mathrm{std}\le 0.003$ for KRC/HR@3, $\pm\mathrm{std}\le 0.02$ for LSD, and $\pm\mathrm{std}\le 0.26$ for MAE/RMSE. </p>
+<p align="left"> <b>Table&nbsp;2</b> Performance comparison on route and time prediction. An upward arrow ($\uparrow$) indicates that higher values are better, while a downward arrow ($\downarrow$) indicates that lower values are better. “--” denotes unavailable results. For SynRTP, we report the mean over three runs, with $\pm\mathrm{std}\le 0.003$ for KRC/HR@3, $\pm\mathrm{std}\le 0.02$ for LSD, and $\pm\mathrm{std}\le 0.26$ for MAE/RMSE. </p>
 
 ![Table 4](src/results_sh_cq.png)
 ![Table 5](src/results_food.png)
 
 
-The results demonstrate consistent generalization:
+The results demonstrate strong and consistent generalization:
 * **Consistent Improvements:** SynRTP consistently outperforms the strongest baselines (including *MRGRP* and *M2G4RTP*) across all datasets. Specifically, we observe **KRC improvements of 1.25%–7.71%**, **LSD reductions of 8.00%–17.55%**.
-* **Cross-Domain Generalization (Food-DL):** The **Food-DL** dataset (Ele.me) represents a completely different business logic—point-to-point "On-Demand" delivery with strict time windows, unlike the planned routes in logistics.
-    * *Result:* SynRTP achieves a **1.25% KRC gain** and a massive **23.32% MAE reduction** on Food-DL.
-    * *Insight:* This proves that SynRTP's synergy mechanism is not overfitting to logistics patterns. The continuous time supervision successfully helps the policy navigate the highly dynamic food delivery graph, confirming the hypothesis that "better time awareness leads to better routing."
+* **Cross-domain generalization (Food-DL).** The `Food-DL` dataset represents a fundamentally different business logic—point-to-point on-demand delivery with strict time windows, rather than planned multi-stop logistics routes.
+    * *Result:* SynRTP achieves a **1.25% KRC gain**, **8.00% LSD reduction** and a massive **23.32% MAE reduction** on Food-DL.
+    * *Insight:* This indicates that SynRTP's synergy mechanism does not overfit to logistics-specific patterns. The continuous time supervision effectively guides the policy on a highly dynamic food-delivery graph, supporting our hypothesis that **better time awareness leads to better routing**.
 
 
 ---
@@ -94,15 +94,19 @@ The results demonstrate consistent generalization:
 ![Table 2](src/results_eff.png)
 
 ### 2.1 Inference Efficiency & Deployment Costs
+
 SynRTP is designed for **low-cost, high-frequency deployment**.
-* **Model Lightweightness:** As shown in **Table 3**, SynRTP utilizes only **0.2M parameters** (Actor-only inference), which is **10x–20x smaller** than graph-heavy baselines like *M2G4RTP* (2.2M) and *MRGRP* (5.7M).
-* **Hardware Requirements:** During inference, SynRTP consumes only **0.1GB of GPU memory**. This extreme efficiency means the model does not require high-end A100/V100 clusters; it can be easily deployed on **consumer-grade GPUs (e.g., RTX 30/40 series)** or even **CPU-only inference servers** with minimal latency penalty, significantly lowering the deployment cost for logistics platforms.
+
+* **Model Lightweightness:** As shown in `Table 2`, SynRTP utilizes only **0.2M parameters** (Actor-only inference), which is **10$\times$~20$\times$ smaller** than graph-heavy baselines like *M2G4RTP* (2.2M) and *MRGRP* (5.7M).
+* **Hardware Requirements:** During inference, SynRTP consumes only **0.1GB of GPU memory**. This extreme efficiency means SynRTP can be easily deployed on **consumer-grade GPUs (e.g., RTX 30/40 series)** or even **CPU-only inference servers** with minimal latency penalty, significantly lowering the deployment cost for logistics platforms.
 * **Speed:** On the full test set, SynRTP achieves the fastest inference (10.6–13.7s total), fully satisfying real-time dispatching requirements.
 
 
 ### 2.2 Sampling Cost & Offline/Online Separation
-We address the concern regarding the sampling number (`#sample`) used in GDRPO.
-* **Offline RL Training:** The multi-route sampling ('\#sample=16') is strictly an **offline training strategy**. During this phase, the computational cost scales linearly with `#sample`, as shown in **Figure 1**. We selected `#sample=16` as the optimal convergence-efficiency tradeoff.
+
+We now clarify the impact of the sampling number (`#sample`) used in GDRPO.
+
+* **Offline RL Training:** Multi-route sampling ('\#sample=16') is strictly an **offline training strategy**. During this phase, the computational cost scales linearly with `#sample`, as shown in **Figure 1**. We selected `#sample=16` as the optimal convergence-efficiency tradeoff.
 * **Online Serving:** Once the model is deployed, the policy $\pi_\theta$ is frozen. We use **Greedy Decoding** (or single-path sampling) for inference. No group sampling or advantage calculation is performed online. Thus, the heavy RL computation does not impact the online system latency.
 
 
@@ -116,15 +120,15 @@ We address the concern regarding the sampling number (`#sample`) used in GDRPO.
 ## 3. Methodological Novelty: GDRPO vs. RL Baselines (Rebuttal Q3)
 
 >Q3. Novelty of GDRPO vs. PPO/Sequence RL (R1-W1, R2-W3/SI1)
->- GDRPO is a specialized adaptation of PPO/GRPO for routing, addressing the "granularity mismatch" between step-level updates and sequence-level metrics. We will add a formal comparison table (vs. PPO/GRPO/GSPO/ReST) to highlight:
->- Critic-Free (vs. PPO): GDRPO has no unstable and expensive Value Network (Critic).
+>- GDRPO is a task-specific adaptation of PPO/GRPO for routing that explicitly addresses the *granularity mismatch* between step-level policy updates and sequence-level evaluation metrics. We will add a formal comparison table (vs. PPO/GRPO/GSPO/ReST-RL) to highlight:
+>- Critic-free design (vs. PPO). GDRPO removes the unstable and expensive value network (critic).
 >- Stable Anchor (vs. GRPO/GSPO/ReST): Unlike Group Relative methods that use a noisy group mean as the baseline, GDRPO uses a deterministic greedy baseline ($\pi^*$) as a stable performance anchor. This design yields a low-variance Location-Deviation Advantage (Eq.17) that explicitly rewards beating the model's best deterministic strategy on the non-differentiable LSD metric.
->- Integration: It is tightly coupled with the uncertainty-based multi-task loss (Eq.21) to balance exploration with imitation.
+>- Integration with multi-task learning. GDRPO is tightly coupled with the uncertainty-based multi-task loss (Eq. 21), which balances exploration with imitation.
 
 
-To clarify the novelty of **GDRPO**, we provide a multi-dimensional comparison against standard **PPO**, **GRPO**, and advanced sequence methods like **GSPO** [1] and **ReST-RL** [2].
+To further clarify the novelty of **GDRPO**, we provide a multi-dimensional comparison with standard **PPO** and **GRPO**, as well as advanced sequence-level methods such as **GSPO** and **ReST-RL**.
 
-**Table: Comparison of RL Optimization Algorithms in Routing**
+**Table: Comparison of RL Optimization Algorithms for Routing**
 
 | Feature Dimension | **PPO** | **GRPO** | **GSPO** [1] | **ReST-RL** [2] | **GDRPO (Ours)** |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -136,9 +140,9 @@ To clarify the novelty of **GDRPO**, we provide a multi-dimensional comparison a
 | **Best Use Case** | Continuous Control | LLM Reasoning | LLM Generation | Iterative Alignment | **Routing / Global Metrics** |
 
 **Highlights of GDRPO:**
-1.  **Granularity Mismatch Solution:** Unlike PPO/GRPO which apply step-level updates, GDRPO uses **Sequence-Level Advantage** to directly optimize the non-differentiable, holistic LSD metric.
-2.  **Stable Anchor:** Unlike GRPO/GSPO which use a stochastic "Group Mean" as the baseline, GDRPO uses a **Deterministic Greedy Rollout ($\pi^*$)**. This serves as a stable performance anchor, reducing variance by asking: *"Did exploration beat the model's current best strategy?"*
-3.  **Efficiency:** Being Critic-free, it avoids the massive overhead of training a Value Network for complex graph states.
+1.  **Granularity-Mismatch Solution.** Unlike PPO/GRPO, which perform step-level updates, GDRPO uses a **sequence-level advantage** to directly optimize the non-differentiable, holistic LSD metric.
+2.  **Stable anchor baseline.** In contrast to GRPO/GSPO, which rely on a stochastic group-mean baseline, GDRPO uses a **deterministic greedy rollout ($\pi^*$)** as a stability anchor, reducing variance by explicitly asking: *“Did exploration beat the model’s current best deterministic strategy?”*
+3.  **Computational efficiency.** Because GDRPO is critic-free, it avoids the substantial overhead of training a value network over complex graph-structured states.
 
 ---
 
@@ -148,17 +152,19 @@ To clarify the novelty of **GDRPO**, we provide a multi-dimensional comparison a
 >- The synergy stems from the Route-Aware Context (Eq.14), which aggregates probability-weighted embeddings. The gradient path is: $\nabla \mathcal{L}_{Time} \to \text{Context} \to \text{Route Logits} (\pi_\theta)$. This path provides a dense, differentiable signal that shapes the policy to favor nodes enabling accurate time predictions, effectively using TP as an implicit reward.
 
 
-We illustrate the gradient flow that enables the "Time Prediction" (TP) task to act as an implicit reward for the "Route Prediction" (RP) task.
+We illustrate the gradient flow that allows the Time Prediction (TP) task to act as an implicit reward for the Route Prediction (RP) task.
 
 * **Route-Aware Context:**
 $$s_i = \sum_{j \in \mathcal{V}} \pi_\theta(j|\hat{\pi}_{<i}) \cdot \tilde{q}_j $$
+where $s_i$ denotes the route-aware context at step $i$, and $\tilde{q}_j$ is the embedding of candidate node $j$.
 
 * **Synergy Gradient Flow:**
 
 $$\frac{\partial \mathcal{L}_{Time}}{\partial \theta} = \frac{\partial \mathcal{L}_{Time}}{\partial \hat{\delta}_i} \cdot \underbrace{\frac{\partial \hat{\delta}_i}{\partial s_i} \cdot \sum_{j} \tilde{q}_j}_{\text{Context Awareness}} \cdot \frac{\partial \pi_\theta(j|\dots)}{\partial \theta}$$
+which makes explicit that gradients from the time loss propagate through the context $s_i$ and then back into the routing policy $\pi_\theta$.
 
 * **Mechanism:** 
-By backpropagating $\mathcal{L}_{Time}$ through the probability-weighted context $s_i$, the model is forced to increase the probability of next-hop nodes that are spatially and temporally coherent. This acts as a **dense, differentiable reward** shaping mechanism, complementing the sparse RL signal.
+By backpropagating $\mathcal{L}_{\text{Time}}$ through the probability-weighted context $s_i$, the policy is encouraged to increase the probability of next-hop nodes that are spatially and temporally coherent. In effect, the time prediction loss acts as a dense, differentiable reward-shaping signal, complementing the sparse RL signal on the non-differentiable route metric.
 
 
 ---
@@ -167,28 +173,34 @@ By backpropagating $\mathcal{L}_{Time}$ through the probability-weighted context
 
 >Q5. Fairness, related-work & ethics (R2-W2/W6/SI2; R3-W2; R4-W2).
 >- Fairness. DutyTTE/MRGRP use official implementations with careful hyperparameter search; the other baselines follow the best configurations released with LaDe. All models are trained with the same input features, early stopping strategy, and evaluation metrics. Our Graphormer encoder uses only the same input features, without additional information. 
->- Related-work. We will expand the discussion to cover additional RTP models.
+>- Related work. We will expand the discussion to cover additional RTP models.
 >- Ethics. We will add a short ethics paragraph: SynRTP is currently used solely to predict couriers' future routes and arrival times to improve ETA reliability and dispatching, not to constrain individual workers' choices.
 
-### 5.1 Expanded Related Work & Challenges
-We discuss the landscape of Joint Route-Time Prediction (RTP) and position our work against recent advances:
-* **Advantages of Joint RTP:** Joint modeling allows shared representations of spatiotemporal graphs, theoretically benefiting both tasks.
+### 5.1 Expanded Related Work
+
+We discuss the landscape of joint Route–Time Prediction (RTP) and position **SynRTP** relative to recent advances:
+
+* **Advantages of joint RTP.** Joint modeling enables shared spatiotemporal representations, which can in principle benefit both RP and TP.
 * **Existing Gaps:**
-    * *RankETPA* and *DeepRoute+* treat tasks sequentially but often suffer from error propagation.
-    * *M2G4RTP* and *MRGRP* introduce advanced graph encoders but still treat RP and TP as loosely coupled heads, leading to the **"Uncooperative Problem"** (gradient isolation).
-    * **New Discussion ($I^2RTP$):** We acknowledge the relevant work **$I^2RTP$** ("*Modeling Intra- and Inter-community Information...*"), which leverages community detection for delivery prediction. While $I^2RTP$ improves representation via community structures, it still relies on conventional multi-task learning objectives. In contrast, **SynRTP** is the first to fundamentally alter the **optimization paradigm** via synergistic decoding and sequence-level RL, directly addressing the negative transfer issue.
+    * *RankETPA* and *DeepRoute+* treat the two tasks sequentially and are prone to error propagation.
+    * *M2G4RTP* and *MRGRP* introduce strong graph encoders but still implement RP and TP as loosely coupled output heads, leading to an **“uncooperative problem”** (gradient isolation).
+    * We additionally acknowledge **$I^2$RTP** (ICDE'23), which leverages community structures for delivery prediction. While $I^2$RTP enriches representations via community information, it continues to rely on conventional multi-task learning objectives. In contrast, **SynRTP** is, to our knowledge, the first to fundamentally alter the **optimization paradigm** via synergistic decoding and sequence-level RL, directly targeting the negative transfer issue.
 
 
 ### 5.2 Baseline Fairness
-To ensure fair comparison, all baselines (including *DutyTTE*, *MRGRP*) were re-trained using:
-1.  **Identical Features:** All models consume the same raw inputs (coordinates, timestamps) and our Graphormer encoder (unless the baseline has a specialized encoder).
-2.  **Identical Evaluation:** Same train/val/test splits and metric calculations.
-3.  **Open Source:** As mentioned in Section 1, these re-implementations are released to guarantee transparency.
+
+To ensure a fair comparison, all baselines (including *DutyTTE* and *MRGRP*) are re-trained under a unified protocol:
+
+1. **Identical features.** All models consume the same raw inputs (e.g., coordinates and timestamps). SynRTP feeds these features into our Graphormer encoder, while baselines retain their original encoder architectures unless they require specialized inputs.  
+2. **Identical evaluation.** We use the same train/validation/test splits and metric calculation procedures for all methods.  
+3. **Open-source Implementations.** As mentioned in the start, all re-implementations are released to guarantee transparency and full reproducibility.
 
 ### 5.3 Ethical Considerations
-* **Assistance vs. Control:** SynRTP is designed to **predict** natural courier behavior to improve system estimates (ETA), not to **prescribe** or enforce routes. It serves as an auxiliary tool to reduce dispatcher uncertainty.
-* **Cognitive Load:** By predicting routes that align with human preferences (e.g., avoiding difficult U-turns), the system can assign tasks that reduce physical and cognitive fatigue for couriers.
-* **Privacy:** All courier IDs are hashed, and GPS coordinates are transformed relative to the region center, ensuring no individual can be tracked or identified.
+
+* **Assistance vs. control.** SynRTP is designed to **predict** natural courier behavior to improve system estimates (ETA), not to **prescribe** or enforce specific routes. It serves as an auxiliary tool to reduce dispatcher uncertainty.  
+* **Cognitive load and well-being.** By predicting routes that better align with human preferences (e.g., avoiding difficult U-turns or overly complex detours), the system can assign tasks in a way that helps reduce physical and cognitive fatigue for couriers.  
+* **Privacy protection.** All courier IDs are hashed, and GPS coordinates are transformed relative to the region center, ensuring that no individual can be directly tracked or re-identified from the released data.
+
 
 ---
 
