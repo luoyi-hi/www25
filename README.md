@@ -222,38 +222,40 @@ To ensure a fair comparison, all baselines (including *DutyTTE* and *MRGRP*) are
 ---
 ### 6.1 Implementation Details & Fairness Protocol
 
-To ensure reproducibility and rigorous fair comparison, all experiments were conducted on a uniform hardware platform equipped with a single Tesla V100 (16 GB) GPU. We implemented SynRTP using PyTorch. For all baseline models, we adopted a standardized evaluation protocol to eliminate implementation bias:
+To ensure reproducibility and a rigorous fair comparison, all experiments are conducted on a unified hardware platform with a single Tesla V100 GPU (16 GB). SynRTP is implemented in PyTorch. For all baseline models, we adopt a standardized evaluation protocol to avoid implementation bias:
 
-<b>(1) Standardized Benchmark Configurations</b>
-<b> LaDe Benchmark Baselines: </b> Most baselines (including DeepRoute, Graph2Route, L2R, etc.) and the datasets used in this paper are sourced from the open-source LaDe Benchmark repository. To ensure our results are directly comparable with community standards, we strictly utilized the official implementations and default optimal hyperparameter configurations provided by the LaDe repository. <b>Independent Baselines: </b>For baselines not included in LaDe (i.e., DutyTTE and MRGRP), we strictly adhered to the same principle: utilizing their respective official open-source codes and adopting the default optimal hyperparameter combinations recommended by the original authors. This strategy ensures that every baseline is evaluated at its intended peak performance capability, avoiding any potential bias from subjective hyperparameter tuning.
+**(1) Standardized benchmark configurations**
 
-<b>(2) Strict Fairness Control </b> 
-Beyond model configurations, we enforced a unified training protocol across all methods to ensure no model received an unfair advantage: <b> Input Consistency.</b>  All models utilize the exact same set of input features (spatial coordinates, temporal timestamps, and courier profiles). We ensured that no baseline was handicapped by missing features, nor did any model benefit from extra information unavailable to others. <b> Termination Criterion.</b> To prevent over-training or under-training biases, we applied a consistent Early Stopping mechanism across all models. Training terminates if the validation metric (KRC) does not improve for a patience of 11 epochs.
+* **[`LaDe`](https://huggingface.co/datasets/Cainiao-AI/LaDe) benchmark baselines.** Most baselines (including DeepRoute, Graph2Route, etc.) and the datasets used in this paper are taken from the open-source LaDe benchmark repository. To make our results directly comparable with community standards, we strictly use the official implementations and their default optimal hyperparameter settings provided in LaDe.  
+* **Independent baselines.** For baselines not included in LaDe (e.g., DutyTTE and MRGRP), we use their official open-source implementations and adopt the default optimal hyperparameter combinations recommended by the original authors. This strategy ensures that every baseline is evaluated close to its intended peak performance, avoiding bias from subjective re-tuning.
 
-<b>(3) SynRTP Settings:</b> 
-For our proposed SynRTP, we selected hyperparameters based on validation set performance: a hidden dimension $d_h=32$, a 3-layer Graphormer encoder with 4 attention heads, and a GDRPO group sampling size $G=16$. The model is trained using a two-stage scheme with the Adam optimizer ($lr=1\times10^{-4}$).
+**(2) Strict fairness control**
+
+Beyond model configurations, we enforce a unified training protocol across all methods so that no model receives an unfair advantage.  
+- **Input consistency.** All models use exactly the same set of input features (spatial coordinates, temporal timestamps, and courier profiles). No baseline is handicapped by missing features, and no model has access to additional information unavailable to others.  
+- **Termination criterion.** To prevent over-training or under-training biases, we apply a consistent early-stopping mechanism to all models: training stops if the validation metric (KRC) does not improve for 11 consecutive epochs.
+
+**(3) SynRTP settings**
+
+For SynRTP, hyperparameters are selected based on validation performance: the hidden dimension is set to $d_h = 32$, the Graphormer encoder has 3 layers with 4 attention heads, and the GDRPO group sampling size is $G = 16$. We train the model in a two-stage scheme using the Adam optimizer with a learning rate of $1 \times 10^{-4}$.
+
 
 
 ### 6.2 Dataset Description
 
-We evaluate our approach using five large-scale real-world datasets to ensure robust generalization. Beyond the original logistics datasets from Shanghai and Chongqing (collected by Cainiao Network)LaDe[^1], we incorporate two additional logistics datasets from Hangzhou and Yantai, as well as a cross-domain food delivery dataset from Dalian (collected by Ele.me[^2]). Collectively, these datasets span diverse urban environments (from mountainous terrains to coastal cities) and distinct operational modes (standard logistics vs. on-demand food delivery), providing a comprehensive benchmark for performance evaluation.
-
-[^1]: https://huggingface.co/datasets/Cainiao-AI/LaDe
-
-[^2]: https://tianchi.aliyun.com/competition/entrance/231777/information
+We evaluate our approach using five large-scale real-world datasets to ensure robust generalization. Beyond the original **logistics datasets** from `Shanghai` and `Chongqing` (collected by Cainiao, [link](https://huggingface.co/datasets/Cainiao-AI/LaDe)), we incorporate two additional logistics datasets from `Hangzhou` and `Yantai`, as well as a cross-domain **food delivery dataset** from `Dalian` (collected by Ele.me, [link](https://tianchi.aliyun.com/competition/entrance/231777/information)). Collectively, these datasets span diverse urban environments (from mountainous terrains to coastal cities) and distinct operational modes (standard logistics vs. on-demand food delivery), providing a comprehensive benchmark for performance evaluation.
 
 
 
 
-The original datasets can be downloaded from the following link: https://huggingface.co/datasets/Cainiao-AI/LaDe. and https://tianchi.aliyun.com/competition/entrance/231777/information. 
+
+### 6.3 Data Generation for Model Training
 
 Install environment dependencies using the following command:
 
 ```shell
 pip install -r requirements.txt
 ```
-
-### 6.3 Data Generation for Model Training
 
 After downloading the original datasets, please use the following command to generate the data required for model training:
 ```shell
