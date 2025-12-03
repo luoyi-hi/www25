@@ -19,7 +19,7 @@ To ensure reproducibility and facilitate future research, we provide the complet
 
 We have expanded the evaluation to `five` distinct datasets to verify robustness. The detailed statistics are provided in `Table 1`. The three newly added datasets are:
 
-* **Cainiao Platform, Logistics:** `Logistics-HZ` (Hangzhou) and `Logistics-YT` (Yantai).
+* **Cainiao Platform, Logistics:** `Logistics-HZ` (Hangzhou) and `Logistics-YT` (Yantai) from [`LaDe`](https://huggingface.co/datasets/Cainiao-AI/LaDe).
 * **Ele.me Platform, Food Delivery:** [`Food-DL`](https://tianchi.aliyun.com/competition/entrance/231777/information) (Dalian).
 
 
