@@ -1,9 +1,11 @@
 # SynRTP
 
 ## Reproducibility & Source Code
-To ensure full reproducibility and facilitate future research, we have released the complete source code for **SynRTP** in this anonymous repository.
-* **SynRTP Implementation:** Pre-training, GDRPO fine-tuning, and Synergistic Inference, see `/algorithm/`.
-* **Baseline Reproduction:** All baselines are released in `/baselines/`. The performance comparisons reported in our paper are strictly fair and reproducible.
+
+To ensure reproducibility and facilitate future research, we provide the complete source code of **SynRTP** in this anonymous repository.
+
+* **SynRTP implementation.** The code for pre-training, GDRPO fine-tuning, and synergistic inference is available in `/algorithm/`.
+* **Baseline implementations.** All baseline methods are included in `/baselines/`. The performance comparisons reported in our paper are fully reproducible under identical settings. Ready-to-run execution commands are listed in Section 6.5 of this repository.
 
 ---
 
@@ -14,35 +16,51 @@ To ensure full reproducibility and facilitate future research, we have released 
 >- Generalization. Across all five datasets, Logistics-SH/CQ/HZ/YT, Food-DL (renamed "TaskType–City"), SynRTP consistently outperforms the strongest RP/TP/RTP baselines: KRC improvements of 1.25–7.71% and LSD reductions of 8.00–17.55%, while MAE/RMSE decrease by up to 23.32%/22.39%. 
 
 ### 1.1 Extended Dataset
-We have expanded the evaluation to 'five' distinct datasets to verify robustness. Three new datasets are added: **Logistics-HZ** (Hangzhou), **Logistics-YT** (Yantai), and [**Food-DL**](https://tianchi.aliyun.com/competition/entrance/231777/information) (Ele.me Food Delivery). We provide detailed statistics in **Table 1**.
+
+We have expanded the evaluation to **five** distinct datasets to verify robustness. The detailed statistics are provided in **Table 1**. The three newly added datasets are:
+
+* **Cainiao Platform, Logistics:** `Logistics-HZ` (Hangzhou) and `Logistics-YT` (Yantai).
+* **Ele.me Platform, Food Delivery:** [`Food-DL`](https://tianchi.aliyun.com/competition/entrance/231777/information) (Dalian).
+
 
 <p align="center"> <b>Table&nbsp;1</b> Summary statistics of the datasets. AvgETA (in minutes) stands for the average arrival time per package. AvgPackage means the average package number of a courier per day. </p>
 
 ![Table 3](src/results_datasets.png)
 
 #### A. Privacy Statement
+
 All datasets are strictly anonymized. User IDs and order IDs are hashed, and GPS coordinates are offset to prevent re-identification while preserving topological properties.
 
 #### B. Data Diversity
 
-As shown in **Table 1**, these datasets cover a wide spectrum of city scales and urban environments.
+As shown in **Table 1**, these datasets cover a wide spectrum of business patterns, city scales, and urban environments.
 
-**i) City Scale Diversity.**
-To ensure the model generalizes across different administrative scales and population densities, we selected cities ranging from massive megacities to major regional hubs:
-* **Mega-Cities (>20 Million):** Shanghai (SH) and Chongqing (CQ) represent the highest tier of urban density and complexity, with populations exceeding 20 million and 30 million, respectively.
-* **Large Metropolitan Area (10~20 Million):** Hangzhou (HZ) represents a rapidly growing new-tier mega-city with a population exceeding 10 million.
-* **Major Regional Cities (5~10 Million):** Yantai (YT) and Dalian (DL) represent major regional economic centers with populations exceeding 5 million, testing the model's adaptability to medium-to-large scale urban networks.
+**i) Business Logic Diversity.**
+Across logistics and food-delivery scenarios, SynRTP is exposed to a wide range of routing and timing patterns.
+* **Logistics:** `Logistics-SH/CQ/HZ/YT` follow batched, pre-planned multi-stop routes with high AvgPackage per courier and relatively flexible delivery windows (AvgETA>140 minutes), typical of parcel logistics. 
+* **Food-Delivery:** In contrast, `Food-DL` represents high-frequency, point-to-point on-demand delivery with much smaller AvgPackage (4.0) and stricter time windows (AvgETA<30 minutes).
 
-**ii) Urban Topology Diversity.**
-These cities exhibit drastically different road network structures and geographical constraints:
-* **Financial/Multi-center:** As a global financial hub located on a flat alluvial plain, **Shanghai** features a dense, grid-like road network with multiple active commercial centers. The routing challenge here lies in managing extreme traffic density and complex high-rise delivery scenarios.
-* **Mountainous/Distributed:** Known as a "Mountain City", **Chongqing** possesses a unique non-planar road network characterized by steep gradients, numerous bridges, and tunnels. The topology is highly distributed rather than centralized, requiring the model to understand complex vertical spatial dependencies.
-* **E-commerce/Multi-center:** As China's e-commerce headquarters, **Hangzhou** features a unique mix of commercial hubs and scenic preservation areas. Its traffic patterns are heavily influenced by logistics parks and high-frequency dispatching demands specific to online retail.
-* **Port/Coastal-belt:** Unlike inland grid cities, **Yantai & Dalian** often feature linear urban layouts constrained by the coastline. Both cities share a distinct "Port/Coastal" topology. This feature results in specific routing challenges, testing the model's ability to handle physical boundary constraints.
 
+**ii) City Scale Diversity.**
+To ensure the model generalizes across different administrative scales and population densities, we selected cities ranging from megacities to major regional hubs:
+
+* **Mega-Cities (>20M):** Shanghai (SH) and Chongqing (CQ) represent the highest tier of urban density and complexity.
+* **Large Metropolitan Area (10–20M):** Hangzhou (HZ) is a rapidly growing new-tier city with a population exceeding 10 million.
+* **Major Regional Cities (5–10M):** Yantai (YT) and Dalian (DL) are important regional economic centers, testing the model’s adaptability to medium-to-large urban networks.
+
+**iii) Urban Topology Diversity.**
+The five cities also exhibit diverse urban forms and road-network topologies:
+
+* **Shanghai (SH):** Flat megacity with a dense, grid-like road network and multiple commercial centers.
+* **Chongqing (CQ):** Mountainous “multi-level” city with non-planar roads, steep gradients, and many bridges/tunnels.
+* **Hangzhou (HZ):** Multi-center city combining e-commerce hubs with large scenic and preservation areas.
+* **Yantai (YT) & Dalian (DL):** Coastal port cities with elongated, coastline-constrained urban belts.
+
+These complementary topologies (grid-like vs. mountainous vs. coastal) jointly stress-test SynRTP under heterogeneous spatial constraints.
 
 #### C. International Data Limitations
-We conducted an exhaustive search for international last-mile datasets. However, existing public corpora (e.g., from Amazon or grab) currently lack the necessary **sequential trajectory fields** or **task-level timestamps** required for joint Route-Time Prediction (RTP). While we focus on high-quality industrial datasets from China, the structural diversity (Mountain vs. Plain, Logistics vs. Food) effectively simulates diverse global delivery scenarios.
+
+We conducted an exhaustive search for international last-mile datasets. However, existing public corpora (e.g., from Amazon or Grab) currently lack the **sequential trajectory fields** or **task-level timestamps** required for joint Route–Time Prediction (RTP). While we focus on high-quality industrial datasets from China, the structural diversity (e.g., logistics vs. food delivery, plain vs. mountain vs. coastal cities) provides a strong proxy for diverse global delivery scenarios.
 
 
 ### 1.2 Comprehensive Results Analysis
