@@ -149,7 +149,9 @@ To further clarify the novelty of **GDRPO**, we provide a multi-dimensional comp
 ## 4. Synergy Mechanism Theory (Rebuttal Q4)
 
 >Q4. Synergy mechanism & gradient paths (R1-W3, R2-W4/SI5).
->- The synergy stems from the Route-Aware Context (Eq.14), which aggregates probability-weighted embeddings. The gradient path is: $\nabla \mathcal{L}_{Time} \to \text{Context} \to \text{Route Logits} (\pi_\theta)$. This path provides a dense, differentiable signal that shapes the policy to favor nodes enabling accurate time predictions, effectively using TP as an implicit reward.
+>- The synergy stems from the Route-Aware Context (Eq.14), which aggregates probability-weighted embeddings. The gradient path is: 
+>$$\nabla \mathcal{L}_{Time} \to \text{Context} \to \text{Route Logits} (\pi_\theta)$$. 
+>This path provides a dense, differentiable signal that shapes the policy to favor nodes enabling accurate time predictions, effectively using TP as an implicit reward.
 
 
 We illustrate the gradient flow that allows the Time Prediction (TP) task to act as an implicit reward for the Route Prediction (RP) task.
